@@ -448,12 +448,12 @@ class RovioNode{
     } else {
       switch(init_state_.state_) {
         case FilterInitializationState::State::WaitForInitExternalPose: {
-          std::cout << "-- Filter: Initializing using external pose ..." << std::endl;
+          // std::cout << "-- Filter: Initializing using external pose ..." << std::endl;
           mpFilter_->resetWithPose(init_state_.WrWM_, init_state_.qMW_, imu_msg->header.stamp.toSec());
           break;
         }
         case FilterInitializationState::State::WaitForInitUsingAccel: {
-          std::cout << "-- Filter: Initializing using accel. measurement ..." << std::endl;
+          // std::cout << "-- Filter: Initializing using accel. measurement ..." << std::endl;
           mpFilter_->resetWithAccelerometer(predictionMeas_.template get<mtPredictionMeas::_acc>(),imu_msg->header.stamp.toSec());
           break;
         }
@@ -465,7 +465,7 @@ class RovioNode{
       }
 
       std::cout << std::setprecision(12);
-      std::cout << "-- Filter: Initialized at t = " << imu_msg->header.stamp.toSec() << std::endl;
+      // std::cout << "-- Filter: Initialized at t = " << imu_msg->header.stamp.toSec() << std::endl;
       init_state_.state_ = FilterInitializationState::State::Initialized;
     }
   }

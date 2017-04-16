@@ -109,7 +109,7 @@ int main(int argc, char** argv){
 
   // Node
   rovio::RovioNode<mtFilter> rovioNode(nh, nh_private, mpFilter);
-  rovioNode.makeTest();
+  //rovioNode.makeTest();
 
 #ifdef MAKE_SCENE
   // Scene

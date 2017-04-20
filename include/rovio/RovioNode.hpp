@@ -56,6 +56,9 @@
 #include "rovio/CoordinateTransform/YprOutput.hpp"
 #include "rovio/CoordinateTransform/LandmarkOutput.hpp"
 
+  bool use_car_model_as_odom=false;
+  Eigen::Vector3d AvM=Eigen::Vector3d(0.0,0.0,0.0);
+
 namespace rovio {
 
 /** \brief Class, defining the Rovio Node
@@ -124,6 +127,7 @@ class RovioNode{
   bool forcePatchPublishing_;
   bool gotFirstMessages_;
   std::mutex m_filter_;
+
 
   // Nodes, Subscriber, Publishers
   ros::NodeHandle nh_;
@@ -239,6 +243,8 @@ class RovioNode{
     nh_private_.param("world_frame", world_frame_, world_frame_);
     nh_private_.param("camera_frame", camera_frame_, camera_frame_);
     nh_private_.param("imu_frame", imu_frame_, imu_frame_);
+
+    nh_private_.getParam("use_car_model_as_odom" , use_car_model_as_odom);
 
     // Initialize messages
     transformMsg_.header.frame_id = world_frame_;
@@ -571,7 +577,7 @@ class RovioNode{
   void velocityCallback(const geometry_msgs::TwistStamped::ConstPtr& velocity){
     std::lock_guard<std::mutex> lock(m_filter_);
     if(init_state_.isInitialized()){
-      Eigen::Vector3d AvM(velocity->twist.linear.x,velocity->twist.linear.y,velocity->twist.linear.z);
+      AvM = Eigen::Vector3d(velocity->twist.linear.x,velocity->twist.linear.y,velocity->twist.linear.z);
       velocityUpdateMeas_.vel() = AvM;
       mpFilter_->template addUpdateMeas<2>(velocityUpdateMeas_,velocity->header.stamp.toSec());
       updateAndPublish();
@@ -739,9 +745,16 @@ class RovioNode{
               odometryMsg_.pose.covariance[j+6*i] = imuOutputCov_(ind1,ind2);
             }
           }
+          if (use_car_model_as_odom) {
+          odometryMsg_.twist.twist.linear.x = AvM.x();
+          odometryMsg_.twist.twist.linear.y = AvM.y();
+          odometryMsg_.twist.twist.linear.z = AvM.z();
+          }
+          else {
           odometryMsg_.twist.twist.linear.x = imuOutput_.BvB()(0);
           odometryMsg_.twist.twist.linear.y = imuOutput_.BvB()(1);
           odometryMsg_.twist.twist.linear.z = imuOutput_.BvB()(2);
+          }
           odometryMsg_.twist.twist.angular.x = imuOutput_.BwWB()(0);
           odometryMsg_.twist.twist.angular.y = imuOutput_.BwWB()(1);
           odometryMsg_.twist.twist.angular.z = imuOutput_.BwWB()(2);

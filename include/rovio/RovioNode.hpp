@@ -56,8 +56,9 @@
 #include "rovio/CoordinateTransform/YprOutput.hpp"
 #include "rovio/CoordinateTransform/LandmarkOutput.hpp"
 
-  bool use_car_model_as_odom=false;
+  bool use_car_model_as_odom_;
   Eigen::Vector3d AvM=Eigen::Vector3d(0.0,0.0,0.0);
+  
 
 namespace rovio {
 
@@ -244,7 +245,7 @@ class RovioNode{
     nh_private_.param("camera_frame", camera_frame_, camera_frame_);
     nh_private_.param("imu_frame", imu_frame_, imu_frame_);
 
-    nh_private_.getParam("use_car_model_as_odom" , use_car_model_as_odom);
+    nh_private.getParam("/rovio/use_car_model_as_odom" , use_car_model_as_odom_);
 
     // Initialize messages
     transformMsg_.header.frame_id = world_frame_;
@@ -579,9 +580,16 @@ class RovioNode{
     if(init_state_.isInitialized()){
       AvM = Eigen::Vector3d(velocity->twist.linear.x,velocity->twist.linear.y,velocity->twist.linear.z);
       velocityUpdateMeas_.vel() = AvM;
+      
+      //double updateTime = velocity->header.stamp.toSec();
+      //mpFilter_->updateSafe(&updateTime);
+      //Eigen::Vector3d temp = imuOutput_.BvB();
       mpFilter_->template addUpdateMeas<2>(velocityUpdateMeas_,velocity->header.stamp.toSec());
       updateAndPublish();
-    }
+      //mpFilter_->updateSafe(&updateTime);
+      //temp = temp - imuOutput_.BvB();
+      //std::cout << "Difference: " << temp(0) << " " << temp(1) << " " << temp(2) << std::endl;
+    } 
   }
 
   /** \brief ROS service handler for resetting the filter.
@@ -721,7 +729,6 @@ class RovioNode{
           tf_transform_CM.setRotation(tf::Quaternion(state.qCM(camID).x(),state.qCM(camID).y(),state.qCM(camID).z(),-state.qCM(camID).w()));
           tb_.sendTransform(tf_transform_CM);
         }
-
         // Publish Odometry
         if(pubOdometry_.getNumSubscribers() > 0 || forceOdometryPublishing_){
           // Compute covariance of output
@@ -745,7 +752,7 @@ class RovioNode{
               odometryMsg_.pose.covariance[j+6*i] = imuOutputCov_(ind1,ind2);
             }
           }
-          if (use_car_model_as_odom) {
+          if (use_car_model_as_odom_) {
           odometryMsg_.twist.twist.linear.x = AvM.x();
           odometryMsg_.twist.twist.linear.y = AvM.y();
           odometryMsg_.twist.twist.linear.z = AvM.z();

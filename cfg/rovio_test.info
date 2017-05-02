@@ -232,4 +232,4 @@ VelocityUpdate
     qAM_z 0
     qAM_w 1
 }
-use_car_model_as_odom false;                                                 uses car model velocity as velocity estimation without filtering (goal: should be false!!!)
+use_car_model_as_odom true;                                                 uses car model velocity as velocity estimation without filtering (goal: should be false!!!)

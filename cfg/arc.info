@@ -2,7 +2,7 @@
 ; #include "/home/user/workspace/rovio/cfg/rovio_custom.info"
 Common
 {
-    doVECalibration true;                                       Should the camera-IMU extrinsics be calibrated online
+    doVECalibration true;                Should the camera-IMU extrinsics be calibrated online TODO: Get good calibration and change to false
     depthType 1;                                                Type of depth parametrization (0: normal, 1: inverse depth, 2: log, 3: hyperbolic)
     verbose false;                                              Is the verbose active
 }
@@ -27,7 +27,7 @@ Camera1
   qCM_y  0.0044205947276                               Y-entry of IMU to Camera quaterion (JPL)
   qCM_z  0.999975530742                               Z-entry of IMU to Camera quaterion (JPL)
   qCM_w  0.00349271962655                               W-entry of IMU to Camera quaterion (JPL)
-  MrMC_x -0.0711303661617                               X-entry of IMU to Camera vector (expressed in IMU CF) [m]
+  MrMC_x -0.0711303661617                        §       X-entry of IMU to Camera vector (expressed in IMU CF) [m]
   MrMC_y -0.00665897280389                               Y-entry of IMU to Camera vector (expressed in IMU CF) [m]
   MrMC_z 0.0071608845418                               Z-entry of IMU to Camera vector (expressed in IMU CF) [m]
 }
@@ -85,7 +85,7 @@ ImgUpdate
     startLevel 2;												Highest patch level which is being employed (must be smaller than the hardcoded template parameter)
     endLevel 1;													Lowest patch level which is being employed
     nDetectionBuckets 100;										Number of discretization buckets used during the candidates selection
-    MahalanobisTh 9.21;											Mahalanobis treshold for the update, 5.8858356
+    MahalanobisTh 2.0;											Mahalanobis treshold for the update, 5.8858356
     UpdateNoise
     {
         pix 2;													Covariance used for the reprojection error, 1/focal_length is roughly 1 pixel std [rad] (~1/f ~ 1/400^2 = 1/160000)
@@ -95,7 +95,7 @@ ImgUpdate
     initCovFeature_1 1e-5;										Covariance for the initial bearing vector, x-component [rad^2]
     initCovFeature_2 1e-5;										Covariance for the initial bearing vector, y-component [rad^2]
     initDepth 0.5;												Initial value for the initial distance parameter
-    startDetectionTh 0.8;										Threshold for detecting new features (min: 0, max: 1)
+    startDetectionTh 0.4;										Threshold for detecting new features (min: 0, max: 1)
     scoreDetectionExponent 0.25;								Exponent used for weighting the distance between candidates
     penaltyDistance 100;										Maximal distance which gets penalized during bucketing [pix]
     zeroDistancePenalty 100;									Penalty for zero distance (max: nDetectionBuckets)
@@ -104,7 +104,7 @@ ImgUpdate
     statMinGlobalQualityRange 100;								Minimum number of frames for obtaining maximal global quality
     trackingUpperBound 0.9;										Threshold for local quality for min overall global quality
     trackingLowerBound 0.8;										Threshold for local quality for max overall global quality
-    minTrackedAndFreeFeatures 0.75;								Minimum of amount of feature which are either tracked or free
+    minTrackedAndFreeFeatures 0.9;								Minimum of amount of feature which are either tracked or free
     removalFactor 1.1;											Factor for enforcing feature removal if not enough free
     minRelativeSTScore 0.75;									Minimum relative ST-score for extracting new feature patch
     minAbsoluteSTScore 5.0;										Minimum absolute ST-score for extracting new feature patch
@@ -196,7 +196,7 @@ PoseUpdate
     pre_cov_MrMV 1e-4;							Covariance parameter of pose between inertial frames, linear part [m^2/s]
     pre_cov_qVM 1e-4;							Covariance parameter of pose between inertial frames, rotational part [rad^2/s]
     MahalanobisTh0 12.6511204;					Mahalonobis distance treshold of pose measurement
-	doVisualization false;						Should the measured poses be vizualized
+	doVisualization true;						Should the measured poses be vizualized
 	enablePosition true;						Should the linear part be used during the update
 	enableAttitude true;						Should the rotation part be used during the update (e.g. set to fals eif feeding GPS-measurement)
 	noFeedbackToRovio true;						By default the pose update is only used for aligning coordinate frame. Set to false if ROVIO should benefit frome the posed measurements.
@@ -222,15 +222,14 @@ VelocityUpdate
 {
     UpdateNoise
     {
-        vel_0 0.0001
-        vel_1 0.0001
-        vel_2 0.0001
+        vel_0 0.0001;
+        vel_1 0.0001;
+        vel_2 0.0001;
     }
-    MahalanobisTh0 7.689997599999999
-    qAM_x 0
-    qAM_y 0
-    qAM_z 0
-    qAM_w 1
+    MahalanobisTh0 7;
+    qAM_x 0;
+    qAM_y 0;
+    qAM_z 0;
+    qAM_w 1;
 }
 
-use_car_model_as_odom true;   

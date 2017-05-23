@@ -75,7 +75,7 @@ class FeatureTrackerNode{
     static_assert(l2>=l1, "l2 must be larger than l1");
     subImu_ = nh_.subscribe("imuMeas", 1000, &FeatureTrackerNode::imuCallback,this);
     subImg_ = nh_.subscribe("/cam0/image_raw", 1000, &FeatureTrackerNode::imgCallback,this);
-    min_feature_count_ = 50;
+    min_feature_count_ = 15;
     max_feature_count_ = 20; // Maximal number of feature which is added at a time (not total)
     cv::namedWindow("Tracker");
     multiCamera_.cameras_[0].load("/home/michael/calibrations/p22035_equidist.yaml");

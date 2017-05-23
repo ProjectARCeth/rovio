@@ -34,7 +34,7 @@ namespace rovio{
     p1_ = config["distortion_coefficients"]["data"][2].as<double>();
     p2_ = config["distortion_coefficients"]["data"][3].as<double>();
     k3_ = config["distortion_coefficients"]["data"][4].as<double>();
-    // std::cout << "Set distortion parameters (Radtan) to: k1(" << k1_ << "), k2(" << k2_ << "), k3(" << k3_ << "), p1(" << p1_ << "), p2(" << p2_ << ")" << std::endl;
+     std::cout << "Set distortion parameters (Radtan) to: k1(" << k1_ << "), k2(" << k2_ << "), k3(" << k3_ << "), p1(" << p1_ << "), p2(" << p2_ << ")" << std::endl;
   }
 
   void Camera::loadEquidist(const std::string& filename){

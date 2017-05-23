@@ -84,7 +84,7 @@ PoseUpdate
     useOdometryCov false
     UpdateNoise
     {
-        pos_0 6.943745335143643e-310
+        pos_0 6.929795684354167e-310
         pos_1 1
         pos_2 0
         att_0 0

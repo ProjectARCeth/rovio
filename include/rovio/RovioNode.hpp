@@ -56,6 +56,7 @@
 #include "rovio/CoordinateTransform/YprOutput.hpp"
 #include "rovio/CoordinateTransform/LandmarkOutput.hpp"
 
+
   bool use_car_model_as_odom_;
   Eigen::Vector3d AvM=Eigen::Vector3d(0.0,0.0,0.0);
   
@@ -496,6 +497,7 @@ class RovioNode{
     std::lock_guard<std::mutex> lock(m_filter_);
     if(mtState::nCam_ > 1) imgCallback(img,1);
   }
+
 
   /** \brief Image callback. Adds images (as update measurements) to the filter.
    *

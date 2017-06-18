@@ -89,7 +89,7 @@ int main(int argc, char** argv){
   ros::NodeHandle nh_private("~");
 
   std::string rootdir = ros::package::getPath("rovio"); // Leaks memory
-  std::string filter_config = rootdir + "/cfg/arc.info";
+  std::string filter_config = rootdir + "/cfg/rovio.info";
 
   nh_private.param("filter_config", filter_config, filter_config);
 
@@ -109,7 +109,7 @@ int main(int argc, char** argv){
 
   // Node
   rovio::RovioNode<mtFilter> rovioNode(nh, nh_private, mpFilter);
-  //rovioNode.makeTest();
+  rovioNode.makeTest();
 
 #ifdef MAKE_SCENE
   // Scene

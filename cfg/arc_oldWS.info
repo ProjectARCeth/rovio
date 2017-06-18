@@ -1,4 +1,4 @@
-; CREATED ON 08_05 You can partially override parameter set in this file by creating your own subset of parameter in a separate info-file and include it with:
+; You can partially override parameter set in this file by creating your own subset of parameter in a separate info-file and include it with:
 ; #include "/home/user/workspace/rovio/cfg/rovio_custom.info"
 Common
 {
@@ -11,25 +11,25 @@ Common
 Camera0
 {
   CalibrationFile  ;            Camera-Calibration file for intrinsics
-  qCM_x  0.000230239112021                               X-entry of IMU to Camera quaterion (Hamilton)
-  qCM_y  -0.00180928802018                               Y-entry of IMU to Camera quaterion (Hamilton)
-  qCM_z  -0.999981319831                               Z-entry of IMU to Camera quaterion (Hamilton)
-  qCM_w  0.00583381996614                               W-entry of IMU to Camera quaterion (Hamilton)
-  MrMC_x 0.0447217382047                               X-entry of IMU to Camera vector (expressed in IMU CF) [m]
-  MrMC_y -0.00477382332896                               Y-entry of IMU to Camera vector (expressed in IMU CF) [m]
-  MrMC_z 0.0067102862036                               Z-entry of IMU to Camera vector (expressed in IMU CF) [m]
+  qCM_x  0.000889992443251                               X-entry of IMU to Camera quaterion (JPL)
+  qCM_y  0.002337741773                               Y-entry of IMU to Camera quaterion (JPL)
+  qCM_z  0.999988824709                               Z-entry of IMU to Camera quaterion (JPL)
+  qCM_w  0.00401164969012                               W-entry of IMU to Camera quaterion (JPL)
+  MrMC_x 0.0385926330809                               X-entry of IMU to Camera vector (expressed in IMU CF) [m]
+  MrMC_y -0.00746468989274                               Y-entry of IMU to Camera vector (expressed in IMU CF) [m]
+  MrMC_z 0.00687240756392                               Z-entry of IMU to Camera vector (expressed in IMU CF) [m]
 }
 
 Camera1
 {
   CalibrationFile  ;            Camera-Calibration file for intrinsics
-  qCM_x  -0.00449509078998                               X-entry of IMU to Camera quaterion (Hamilton)
-  qCM_y  -0.00399587138024                               Y-entry of IMU to Camera quaterion (Hamilton)
-  qCM_z  -0.999968234619                               Z-entry of IMU to Camera quaterion (Hamilton)
-  qCM_w  0.00523038468817                               W-entry of IMU to Camera quaterion (Hamilton)
-  MrMC_x -0.0651119615311                               X-entry of IMU to Camera vector (expressed in IMU CF) [m]
-  MrMC_y -0.00361832070378                               Y-entry of IMU to Camera vector (expressed in IMU CF) [m]
-  MrMC_z 0.00685821087734                               Z-entry of IMU to Camera vector (expressed in IMU CF) [m]
+  qCM_x  0.00414694692497                               X-entry of IMU to Camera quaterion (JPL)
+  qCM_y  0.0044205947276                               Y-entry of IMU to Camera quaterion (JPL)
+  qCM_z  0.999975530742                               Z-entry of IMU to Camera quaterion (JPL)
+  qCM_w  0.00349271962655                               W-entry of IMU to Camera quaterion (JPL)
+  MrMC_x -0.0711303661617                        §       X-entry of IMU to Camera vector (expressed in IMU CF) [m]
+  MrMC_y -0.00665897280389                               Y-entry of IMU to Camera vector (expressed in IMU CF) [m]
+  MrMC_z 0.0071608845418                               Z-entry of IMU to Camera vector (expressed in IMU CF) [m]
 }
 
 Init
@@ -95,9 +95,9 @@ ImgUpdate
     initCovFeature_1 1e-5;										Covariance for the initial bearing vector, x-component [rad^2]
     initCovFeature_2 1e-5;										Covariance for the initial bearing vector, y-component [rad^2]
     initDepth 0.5;												Initial value for the initial distance parameter
-    startDetectionTh 0.4;										Threshold for detecting new features (min: 0, max: 1)
+    startDetectionTh  0.3;										Threshold for detecting new features (min: 0, max: 1)
     scoreDetectionExponent 0.25;								Exponent used for weighting the distance between candidates
-    penaltyDistance 100;										Maximal distance which gets penalized during bucketing [pix]
+    penaltyDistance 48;										    Maximal distance which gets penalized during bucketing [pix]
     zeroDistancePenalty 100;									Penalty for zero distance (max: nDetectionBuckets)
     statLocalQualityRange 10;									Number of frames for local quality evaluation
     statLocalVisibilityRange 100;								Number of frames for local visibility evaluation
@@ -105,8 +105,8 @@ ImgUpdate
     trackingUpperBound 0.9;										Threshold for local quality for min overall global quality
     trackingLowerBound 0.8;										Threshold for local quality for max overall global quality
     minTrackedAndFreeFeatures 0.9;								Minimum of amount of feature which are either tracked or free
-    removalFactor 1.1;											Factor for enforcing feature removal if not enough free
-    minRelativeSTScore 0.75;									Minimum relative ST-score for extracting new feature patch
+    removalFactor 10;											Factor for enforcing feature removal if not enough free
+    minRelativeSTScore 0.75;					     			Minimum relative ST-score for extracting new feature patch
     minAbsoluteSTScore 5.0;										Minimum absolute ST-score for extracting new feature patch
     minTimeBetweenPatchUpdate 1.0;								Minimum time between new multilevel patch extrection [s]
     fastDetectionThreshold 5;									Fast corner detector treshold while adding new feature
@@ -153,9 +153,9 @@ Prediction
         pos_0 1e-3;								X-covariance parameter of position prediction [m^2/s]
         pos_1 1e-3;								Y-covariance parameter of position prediction [m^2/s]
         pos_2 1e-3;								Z-covariance parameter of position prediction [m^2/s]
-        vel_0 4e-4; 4e-6						X-covariance parameter of velocity prediction [m^2/s^3]
-        vel_1 4e-4;								Y-covariance parameter of velocity prediction [m^2/s^3]
-        vel_2 4e-4;								Z-covariance parameter of velocity prediction [m^2/s^3]
+        vel_0 4e-1; 4e-4 4e-6						X-covariance parameter of velocity prediction [m^2/s^3]
+        vel_1 4e-1;								Y-covariance parameter of velocity prediction [m^2/s^3]
+        vel_2 4e-1;								Z-covariance parameter of velocity prediction [m^2/s^3]
         acb_0 1e-7;								X-covariance parameter of accelerometer bias prediction [m^2/s^5]
         acb_1 1e-7;								Y-covariance parameter of accelerometer bias prediction [m^2/s^5]
         acb_2 1e-7;								Z-covariance parameter of accelerometer bias prediction [m^2/s^5]
@@ -203,20 +203,20 @@ PoseUpdate
 	doInertialAlignmentAtStart true;			Should the transformation between I and W be explicitly computed and set with the first pose measurement.
 	timeOffset 0.0;								Time offset added to the pose measurement timestamps
     useOdometryCov false;                    Should the UpdateNoise position covariance be scaled using the covariance in the Odometry message
-    qVM_x 0;                  X-entry of quaterion representing IMU to reference body coordinate frame of pose measurement (Hamilton)
-    qVM_y 0;                  Y-entry of quaterion representing IMU to reference body coordinate frame of pose measurement (Hamilton)
-    qVM_z 0;                  Z-entry of quaterion representing IMU to reference body coordinate frame of pose measurement (Hamilton)
-    qVM_w -1;                 W-entry of quaterion representing IMU to reference body coordinate frame of pose measurement (Hamilton)
-    MrMV_x 0;                 X-entry of vector representing IMU to reference body coordinate frame of pose measurement
-    MrMV_y 0;                 Y-entry of vector representing IMU to reference body coordinate frame of pose measurement
-    MrMV_z 0;                 Z-entry of vector representing IMU to reference body coordinate frame of pose measurement
-    qWI_x 0;                  X-entry of quaterion representing World to reference inertial coordinate frame of pose measurement (Hamilton)
-    qWI_y 0;                  Y-entry of quaterion representing World to reference inertial coordinate frame of pose measurement (Hamilton)
-    qWI_z 0;                  Z-entry of quaterion representing World to reference inertial coordinate frame of pose measurement (Hamilton)
-    qWI_w -1;                 W-entry of quaterion representing World to reference inertial coordinate frame of pose measurement (Hamilton)
-    IrIW_x 0;                 X-entry of vector representing World to reference inertial coordinate frame of pose measurement
-    IrIW_y 0;                 Y-entry of vector representing World to reference inertial coordinate frame of pose measurement
-    IrIW_z 0;                 Z-entry of vector representing World to reference inertial coordinate frame of pose measurement
+    qVM_x 0;									X-entry of quaterion representing IMU to reference body coordinate frame of pose measurement (Hamilton)
+    qVM_y 0;									Y-entry of quaterion representing IMU to reference body coordinate frame of pose measurement (Hamilton)
+    qVM_z 0;									Z-entry of quaterion representing IMU to reference body coordinate frame of pose measurement (Hamilton)
+    qVM_w 1;									W-entry of quaterion representing IMU to reference body coordinate frame of pose measurement (Hamilton)
+    MrMV_x 0;									X-entry of vector representing IMU to reference body coordinate frame of pose measurement
+    MrMV_y 0;									Y-entry of vector representing IMU to reference body coordinate frame of pose measurement
+    MrMV_z 0;									Z-entry of vector representing IMU to reference body coordinate frame of pose measurement
+    qWI_x 0;									X-entry of quaterion representing World to reference inertial coordinate frame of pose measurement (Hamilton)
+    qWI_y 0;									Y-entry of quaterion representing World to reference inertial coordinate frame of pose measurement (Hamilton)
+    qWI_z 0;									Z-entry of quaterion representing World to reference inertial coordinate frame of pose measurement (Hamilton)
+    qWI_w 1;									W-entry of quaterion representing World to reference inertial coordinate frame of pose measurement (Hamilton)
+    IrIW_x 0;									X-entry of vector representing World to reference inertial coordinate frame of pose measurement
+    IrIW_y 0;									Y-entry of vector representing World to reference inertial coordinate frame of pose measurement
+    IrIW_z 0;									Z-entry of vector representing World to reference inertial coordinate frame of pose measurement
 }
 VelocityUpdate
 {
